@@ -4,11 +4,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClassModule } from './class/class.module';
 import { typeOrmConfig } from './config/typeorm.config';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
-    ClassModule
+    ClassModule,
+    StudentModule
   ],
   controllers: [AppController],
   providers: [AppService],
