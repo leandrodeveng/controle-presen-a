@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 import { Class } from "./class.entity";
 import { ClassService } from "./class.service";
@@ -25,6 +25,17 @@ export class ClassController {
 
     @Post()
     async createClass(@Body() classDto: ClassDto) {
+        let nameExists = await this.classService
+            .getClassByName(classDto.name)
+        let classCodeExists = await this.classService
+            .getClassByCode(classDto.classCode)
+
+        if(nameExists || classCodeExists) {
+            throw new BadRequestException(
+                'Não é possível criar uma turma com um nome ou codigo já existente.'
+            )
+        }
+
         return await this.entityManager.transaction(async transactionManager => {
             return await this.classService.create(classDto, transactionManager);
         });

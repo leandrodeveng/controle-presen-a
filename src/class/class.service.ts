@@ -28,6 +28,24 @@ export class ClassService {
         })
     }
 
+    async getClassByName(name: string) {
+        return await this.classRepository.findOne({
+            where: {
+                name,
+                deletedAt: IsNull()
+            }
+        })
+    }
+
+    async getClassByCode(classCode: string) {
+        return await this.classRepository.findOne({
+            where: {
+                classCode,
+                deletedAt: IsNull()
+            }
+        })
+    }
+
     async create(classDto: ClassDto, entityManager: EntityManager) {
         let classRepository = entityManager.getRepository(Class)
         let {
