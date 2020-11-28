@@ -1,6 +1,6 @@
 import { Injectable, Scope } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { EntityManager, IsNull, Repository } from "typeorm";
 import { Class } from "./class.entity";
 import { ClassDto } from "./dto/class.dto";
 
@@ -12,10 +12,67 @@ export class ClassService {
     ) {}
 
     async getAll() {
-        return await this.classRepository.find()
+        return await this.classRepository.find({
+            where: {
+                deletedAt: IsNull()
+            }
+        })
     }
 
-    create(classDto: ClassDto) {
-        
+    async getById(id: number) {
+        return await this.classRepository.findOne({
+            where: {
+                id,
+                deletedAt: IsNull()
+            }
+        })
+    }
+
+    async create(classDto: ClassDto, entityManager: EntityManager) {
+        let classRepository = entityManager.getRepository(Class)
+        let {
+            name, 
+            classCode, 
+            description,
+            period
+        } = classDto
+        return await classRepository.insert(
+            new Class({
+                name,
+                classCode,
+                period,
+                description,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            })
+        )
+    }
+
+    async update(id: number, classDto: ClassDto, entityManager: EntityManager) {
+        let classRepository = entityManager.getRepository(Class)
+        let {
+            name, 
+            classCode,
+            period, 
+            description
+        } = classDto
+        return await classRepository.update(
+            id,
+            {
+                name,
+                classCode,
+                period,
+                description,
+                updatedAt: new Date()
+            }
+        )
+    }
+
+    async delete(id: number, entityManager: EntityManager) {
+        let classRepository = entityManager.getRepository(Class)
+        return await classRepository.update(
+            id, 
+            { deletedAt: new Date(), updatedAt: new Date() }
+        )
     }
 }

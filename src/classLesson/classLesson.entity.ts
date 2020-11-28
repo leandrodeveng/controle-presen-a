@@ -1,21 +1,18 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Class {
+export class ClassLesson {
     @PrimaryGeneratedColumn()
     id: number
 
     @Column()
-    name: string
+    classId: number
 
     @Column()
-    classCode: string
+    lessonDate: Date
 
     @Column()
-    period: string
-
-    @Column()
-    description: string
+    lessonContent: String
 
     @Column({ nullable: true })
     createdAt: Date
@@ -26,7 +23,7 @@ export class Class {
     @Column({ nullable: true })
     deletedAt: Date
 
-    constructor(partial: Partial<Class>) {
+    constructor(partial: Partial<ClassLesson>) {
         Object.assign(this, partial);
     }
 }

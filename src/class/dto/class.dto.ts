@@ -1,5 +1,6 @@
 export class ClassDto {
     name: string
-    classNumber: number
+    classCode: string
     description: string 
+    period: string
 }
