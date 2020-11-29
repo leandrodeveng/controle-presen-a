@@ -28,6 +28,15 @@ export class ClassService {
         })
     }
 
+    async getByName(name: number) {
+        return await this.classRepository.findOne({
+            where: {
+                name,
+                deletedAt: IsNull()
+            }
+        })
+    }
+
     async getClassByName(name: string) {
         return await this.classRepository.findOne({
             where: {

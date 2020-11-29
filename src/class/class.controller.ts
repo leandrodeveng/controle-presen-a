@@ -51,10 +51,22 @@ export class ClassController {
         });
     }
 
-    @Delete(':id')
-    async deleteClass(@Param('id') id: number) {
+    // @Delete(':id')
+    // async deleteClass(@Param('id') id: number) {
+    //     return await this.entityManager.transaction(async transactionManager => {
+    //         return await this.classService.delete(id, transactionManager);
+    //     });
+    // }
+
+    @Delete(':name')
+    async deleteClassByName(@Param('name') name: string) {
+        let classExists = await this.classService.getClassByName(name)
+        if(!classExists) {
+            throw new BadRequestException('Não existe uma turma cadastrada com esse nome')
+        }
+
         return await this.entityManager.transaction(async transactionManager => {
-            return await this.classService.delete(id, transactionManager);
+            return await this.classService.delete(classExists.id, transactionManager);
         });
     }
 }
