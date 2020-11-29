@@ -30,7 +30,7 @@ export class ClassController {
         let classCodeExists = await this.classService
             .getClassByCode(classDto.classCode)
 
-        if(nameExists || classCodeExists) {
+        if(nameExists) {
             throw new BadRequestException(
                 'Não é possível criar uma turma com um nome ou codigo já existente.'
             )
