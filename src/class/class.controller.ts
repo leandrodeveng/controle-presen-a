@@ -58,9 +58,9 @@ export class ClassController {
     //     });
     // }
 
-    @Delete(':name')
-    async deleteClassByName(@Param('name') name: string) {
-        let classExists = await this.classService.getClassByName(name)
+    @Delete()
+    async deleteClassByName(@Body() classDto: ClassDto) {
+        let classExists = await this.classService.getClassByName(classDto.name)
         if(!classExists) {
             throw new BadRequestException('Não existe uma turma cadastrada com esse nome')
         }
