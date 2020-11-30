@@ -9,7 +9,7 @@ export class ClassPresence {
     classId: number
 
     @Column()
-    lessonDate: Date
+    lessonDate: string
 
     @Column()
     student: string

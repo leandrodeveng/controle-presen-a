@@ -1,6 +1,6 @@
 export class ClassPresenceDto {
     classId: number
-    lessonDate: Date
+    lessonDate: string
     student: string
     presence: Boolean
 }

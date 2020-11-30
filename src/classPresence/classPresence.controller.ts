@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 import { ClassPresence } from "./classPresence.entity";
 import { ClassPresenceService } from "./classPresence.service";
 import { ClassPresenceDto } from "./dto/classPresence.dto";
+import { formatedDateString, stringToDate } from '../utils/date.utils';
 
 @Controller('classPresence')
 export class ClassPresenceController {
@@ -25,6 +26,10 @@ export class ClassPresenceController {
 
     @Post()
     async createClassPresence(@Body() classPresenceDto: ClassPresenceDto) {
+        let validDate = stringToDate(classPresenceDto.lessonDate)
+        if(!validDate) {
+            throw new BadRequestException('Data inválida')
+        }
         return await this.entityManager.transaction(async transactionManager => {
             return await this.classPresenceService.create(
                 classPresenceDto, 
